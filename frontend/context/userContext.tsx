@@ -5,15 +5,14 @@ import {
   useState,
   useEffect,
   useRef,
-  ReactNode,
-  Dispatch,
-  SetStateAction,
+  type Dispatch,
+  type SetStateAction,
+  type ReactNode,
 } from "react";
-import { io, Socket } from "socket.io-client";
+import io from "socket.io-client";
 
 const ENDPOINT = "http://localhost:8000";
 
-// Define types
 export interface Chat {
   _id: string;
   name?: string;
@@ -60,8 +59,10 @@ interface ProviderProps {
   children: ReactNode;
 }
 
+type SocketInstance = ReturnType<typeof io>;
+
 export function UserContextProvider({ children }: ProviderProps) {
-  const socket = useRef<Socket | null>(null);
+  const socket = useRef<SocketInstance | null>(null);
 
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
@@ -70,7 +71,6 @@ export function UserContextProvider({ children }: ProviderProps) {
   const [chats, setChats] = useState<Chat[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  // Fetch user profile
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -84,7 +84,6 @@ export function UserContextProvider({ children }: ProviderProps) {
     if (!user) fetchUser();
   }, [user]);
 
-  // Handle notifications + socket setup
   useEffect(() => {
     const getNotifications = async () => {
       try {
@@ -94,12 +93,11 @@ export function UserContextProvider({ children }: ProviderProps) {
         console.error("Error getting notifications", error);
       }
     };
-
     if (!socket.current) {
       socket.current = io(ENDPOINT);
     }
 
-    if (user) {
+    if (user && socket.current) {
       socket.current.emit("setup", user);
       socket.current.on("connected", () => {
         console.log("Socket connected");
@@ -108,23 +106,25 @@ export function UserContextProvider({ children }: ProviderProps) {
 
     getNotifications();
 
-    if (socket.current) {
-      socket.current.on("message recieved", (newMessageRecieved: Message) => {
-        if (!selectedChat || selectedChat._id !== newMessageRecieved.chat._id) {
-          const found = notifications.some(
-            (notif) => notif.message._id === newMessageRecieved._id
-          );
-          if (!found) {
-            getNotifications();
-          }
+    const handleMessageReceived = (newMessageRecieved: Message) => {
+      if (!selectedChat || selectedChat._id !== newMessageRecieved.chat._id) {
+        const found = notifications.some(
+          (notif) => notif.message._id === newMessageRecieved._id
+        );
+        if (!found) {
+          getNotifications();
         }
-      });
+      }
+    };
+
+    if (socket.current) {
+      socket.current.off?.("message recieved", handleMessageReceived);
+      socket.current.on("message recieved", handleMessageReceived);
     }
 
     return () => {
       if (socket.current) {
-        socket.current.disconnect();
-        socket.current = null;
+        socket.current.off?.("message recieved", handleMessageReceived);
       }
     };
   }, [user, selectedChat, notifications]);
