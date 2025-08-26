@@ -2,9 +2,10 @@
 import {
   createContext,
   useState,
-  ReactNode,
-  Dispatch,
-  SetStateAction,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
+
 } from "react";
 
 
