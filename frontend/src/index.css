@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body{
+    background-color: #212121;
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+}
+
+.pages, .fade-in {
+    animation: fadeInAnimation ease 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+     }
+}
+
+.loader {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background:
+        radial-gradient(farthest-side, #ff8633 94%, #0000) top/8px 8px no-repeat,
+        conic-gradient(#0000 30%, #ff8633);
+    -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+    animation: l13 1s infinite linear;
+}
+
+@keyframes l13 {
+    100% {
+        transform: rotate(1turn)
+    }
+}
+
+/* .scrollbar{
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a2a #4d4d4d;
+} */
+
+html::-webkit-scrollbar {
+    width: 10px;
+}
+
+html::-webkit-scrollbar-thumb {
+    background-color: #4d4d4d;
+    border-radius: 7px;
+}
+
+html::-webkit-scrollbar-track {
+    background-color: #212121;
+    border-radius: 5px;
+}
+
+div::-webkit-scrollbar {
+    width: 7px;
+}
+div::-webkit-scrollbar-thumb {
+    background-color: #4d4d4d;
+    border-radius: 7px;
+}
+div::-webkit-scrollbar-track {
+    background-color: #212121;
+    border-radius: 5px;
+}
+
+form::-webkit-scrollbar {
+    width: 7px;
+}
+form::-webkit-scrollbar-thumb {
+    background-color: #4d4d4d;
+    border-radius: 7px;
+}
+form::-webkit-scrollbar-track {
+    background-color: #212121;
+    border-radius: 5px;
+}
+/* .navbar{
+    box-shadow: 0px 0.5px 1px #181818, 
+              0px 0px 1px #181818, 
+              0px 1px 2px #181818, 
+              0px 2px 4px #181818;
+} */
+.login-signup-shadow {
+    box-shadow: -8px -8px 12px rgba(80, 80, 80, 0.45), 8px 8px 12px rgba(11, 11, 11, 0.3);
+}
+
+@layer components {
+    .navbar {
+        @apply sticky top-0 right-0 left-0 z-30 bg-darkgray flex justify-between items-center py-4 lg:px-16 md:px-20 sm:px-10 max-sm:px-10
+    }
+    .register-btn {
+        @apply font-bold bg-orange px-5 py-2 rounded hover:bg-lorange cursor-pointer transition-all duration-300
+    }
+    .nav-links {
+        @apply px-4 py-2 hover:text-lorange transition-all duration-200
+    }
+    .reg-signin-input {
+        @apply bg-light-gray max-sm:w-full w-full px-2 py-2 focus:placeholder-orange border-b-[1px] border-b-neutral-600 focus:border-b-orange bg-transparent focus:outline-none focus:border-b
+    }
+    .reg-signin-btn {
+        @apply text-white rounded-full py-1 font-bold px-8 border border-orange  hover:bg-orange transition-all duration-300
+    }
+    .show-sidebar {
+        @apply fixed right-0 top-0 z-50 bg-[#111111] h-full md:w-[50%] w-[70%] py-16 mt-0
+    }
+}
+.show-sidebar{
+    animation: showMenu 0.5s;
+}
+.close-sidebar{
+    animation: showMenu 0.5s reverse;
+}
+
+@keyframes showMenu {
+    from {
+      right: -100%;
+    }
+    to {
+      right: 0%;
+    }
+}
+
+.reg-signin-input:invalid[focused='true']{
+    border-bottom: 1px solid #ff8633;
+}
+
+.reg-signin-input:invalid[focused='true'] ~ .inp-error{
+    display: block;
+}
+
+.profile-input:invalid[focused='true']{
+    border-bottom: 1px solid #ff8633;
+}
+.profile-input:invalid[focused='true'] ~ .inp-error{
+    display: block;
+}
+
+.explore-btn {
+    --color: #ff8633;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 8em;
+    height: 2.6em;
+    line-height: 2.5em;
+    margin: 20px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid var(--color);
+    transition: color .5s;
+    z-index: 1;
+    font-size: 17px;
+    border-radius: 6px;
+    font-weight: 500;
+    color: var(--color);
+   }
+   
+   .explore-btn:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    background: var(--color);
+    height: 150px;
+    width: 200px;
+    border-radius: 50%;
+   }
+   
+   .explore-btn:hover {
+    color: #fff;
+   }
+   
+   .explore-btn:before {
+    top: 100%;
+    left: 100%;
+    transition: all .7s;
+   }
+   
+   .explore-btn:hover:before {
+    top: -30px;
+    left: -30px;
+   }
+   
+   .explore-btn:active:before {
+    background: #ff8633;
+    transition: background 0s;
+   }
+
+   .skeleton {
+       animation: skeleton-animation 1s linear infinite alternate;
+       opacity: 0.7;
+   }
+
+   @keyframes skeleton-animation {
+       0% {
+           background-color: #383838;
+       }
+
+       100% {
+           background-color: #5e5e5e;
+       }
+   }

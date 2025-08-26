@@ -17,7 +17,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
     methods: ["POST", "GET", "PUT", "PATCH", "DELETE"],
   })
 );
@@ -42,7 +42,7 @@ const server = app.listen(port, () =>
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3000",
+    origin: "http://localhost:5173",
     // credentials: true,
   },
 });
