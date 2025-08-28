@@ -6,9 +6,10 @@ const {
   loginUser,
   getProfile,
   logoutUser,
-//   generateOtp,
-//   resetPassword,
-//   verifyOtp,
+  generateOtp,
+  resetPassword,
+  testEmail,
+  verifyOtp,
   googleAuth,
   getAllUsers,
   deleteUsers,
@@ -22,10 +23,10 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/profile", authMiddleware, getProfile);
 router.get("/logout", logoutUser);
-// router.get("/forgot-password", generateOtp);
-// router.get("/forgot-password/otp", verifyOtp);
-// router.post("/resetPassword", resetPassword);
-// router.get("/email-test", testEmail);
+router.get("/forgot-password", generateOtp);
+router.get("/forgot-password/otp", verifyOtp);
+router.post("/resetPassword", resetPassword);
+router.get("/email-test", testEmail);
 router.get("/user/:id", getUserById);
 
 router.post("/auth/google", googleAuth);

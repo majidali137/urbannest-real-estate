@@ -6,6 +6,7 @@ import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
 
 const Footer = () => {
   const location = useLocation();
+  const currentYear = new Date().getFullYear();
 
   // Check if the current path is '/profile'
   if (location.pathname === "/profile") {
@@ -43,7 +44,7 @@ const Footer = () => {
       </div>
       <div className="text-white text-sm pt-8 flex justify-between items-center max-sm:flex-col-reverse gap-4">
         <p className=" text-light-gray">
-          © 2025 Urbannest. All rights reserved
+          © {currentYear} Urbannest. All rights reserved
         </p>
         <div className="text-white flex gap-5 text-lg">
           <FaFacebook className="hover:text-orange cursor-pointer" />

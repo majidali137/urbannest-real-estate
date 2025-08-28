@@ -1,9 +1,10 @@
 const express = require("express");
-require("dotenv").config();
+const dotenv = require("dotenv").config();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const { mongoose } = require("mongoose");
-
+const path = require("path");
+const Chat = require("./models/chat");
 
 //database connection
 mongoose
@@ -33,6 +34,23 @@ app.use("/", require("./Routes/messageRoutes"));
 app.use("/", require("./Routes/notificationRoutes"));
 
 app.get("/favicon.ico", (req, res) => res.status(204));
+// ---------------------- Deployment Code ----------------------
+
+// const __dirname1 = path.dirname(__dirname);
+// // console.log(__dirname1)
+// if(process.env.NODE_ENV === 'production'){
+//     app.use(express.static(path.join(__dirname1, '/urbannest-realestate')))
+
+//     app.get('*', (req, res) => {
+//         res.sendFile(path.resolve(__dirname1, 'urbannest-realestate', 'index.html'))
+//     })
+// } else {
+//     app.get('/', (req, res) => {
+//         res.send('Api running successfully')
+//     })
+// }
+
+// ---------------------- Deployment Code ^ ----------------------
 
 const port = process.env.PORT || 8080;
 const server = app.listen(port, () =>
