@@ -1,55 +1,37 @@
 import { Navigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import type { ReactNode } from "react";
 import { UserContext } from "../../context/userContext";
 import { getToken } from "./cookies";
 import axios from "axios";
 
-interface Role {
-  name: string;
-}
-
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  roles?: Role[];
-  [key: string]: unknown;
-}
-
-interface ProtectedRouteProps {
-  children: ReactNode;
-}
-
-export const ProtectRoute = ({ children }: ProtectedRouteProps) => {
-  const { user } = useContext(UserContext)!;
+export const ProtectRoute = ({ children }) => {
+  const { user } = useContext(UserContext);
   const token = getToken();
 
   if (user || token) {
-    return <Navigate to={"/"} replace />;
+    return <Navigate to={"/"} replace={true}></Navigate>;
   }
-  return <>{children}</>;
+  return children;
 };
 
-export const ProfileProtectedRoute = ({ children }: ProtectedRouteProps) => {
+export const ProfileProtectedRoute = ({ children }) => {
   const token = getToken();
-  const { user } = useContext(UserContext)!;
-
+  const { user } = useContext(UserContext);
   if (!user && !token) {
-    return <Navigate to={"/login"} replace />;
+    return <Navigate to={"/login"} replace={true}></Navigate>;
   }
-  return <>{children}</>;
+  return children;
 };
 
-export const AdminProtectedRoute = ({ children }: ProtectedRouteProps) => {
+export const AdminProtectedRoute = ({ children }) => {
   const token = getToken();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const { data } = await axios.get<User>("/profile");
+        const { data } = await axios.get("/profile");
         if (data) {
           setUser(data);
         }
@@ -72,8 +54,8 @@ export const AdminProtectedRoute = ({ children }: ProtectedRouteProps) => {
   }
 
   if (!user || user?.roles?.[0]?.name !== "admin") {
-    return <Navigate to={"/login"} replace />;
+    return <Navigate to={"/login"} replace={true} />;
   }
 
-  return <>{children}</>;
+  return children;
 };
